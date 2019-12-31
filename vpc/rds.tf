@@ -37,7 +37,7 @@ resource "aws_security_group" "database_sg" {
 
 module "db" {
   source = "terraform-aws-modules/rds/aws"
-  version = "~> 1.0"
+  version = "~> v1.0"
   identifier = "postgres-${var.name}"
   family     = "${var.database_family}"
 
