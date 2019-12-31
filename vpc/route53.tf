@@ -10,6 +10,7 @@ resource "aws_route53_record" "internal-ns" {
   name    = "internal"
   type    = "NS"
   ttl     = "300"
+  allow_overwrite = true
 
   records = [
     "${aws_route53_zone.internal.name_servers.0}",
@@ -23,6 +24,7 @@ resource "aws_route53_record" "postgres" {
   zone_id = "${aws_route53_zone.internal.zone_id}"
   name    = "postgres.internal"
   type    = "A"
+  allow_overwrite = true
 
   alias {
     name                   = "${module.db.this_db_instance_address}"
@@ -37,6 +39,7 @@ resource "aws_route53_record" "postgres_reads" {
   name    = "postgres-reads.internal"
   type    = "CNAME"
   ttl     = "300"
+  allow_overwrite = true
 
   weighted_routing_policy {
     weight = "${100 / var.database_read_replicas}"
@@ -52,4 +55,5 @@ resource "aws_route53_record" "redis" {
   type    = "CNAME"
   ttl     = "300"
   records = ["${aws_elasticache_replication_group.redis.primary_endpoint_address}"]
+  allow_overwrite = true
 }
